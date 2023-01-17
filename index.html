@@ -10,25 +10,32 @@
 <body>
   <div id="app">
      <div class="container">
-        <h1>LAPORAN HARIAN SALESMAN PT. BERKAH</h1>
+        <h1>LAPORAN KUNJUNGAN TOKO SALESMAN PT. BERKAH</h1>
         <form name="sales-report-form" @submit="submitForm($event)" method="post" action="">
            
-            <label for="fname">Nama Depan</label>
-            <input type="text" v-model="fname" id="fname" name="firstname" placeholder="Nama Depan .." >
-
-            <label for="lname">Nama Belakang</label>
-            <input type="text" v-model="lname" id="lname" name="lastname" placeholder="Nama Belakang.." >
+            <label for="fullName">Nama Sales</label>
+            <select v-model="fullName" id="fullName" name="Sales Name">
+                <option v-for="name in names" :value="name.text">{{name.text}}</option>                      
+            </select>
 
             <label for="nrp">NRP</label>
-            <input type="text" v-model="nrp" id="nrp" name="sales_nrp" placeholder="NRP.." >
-
+            <select v-model="nrp" id="nrp" name="NRP">
+                <option v-for="nrp in nrps" :value="nrp.text">{{nrp.text}}</option>                      
+            </select>
             <label for="area">Area Kerja</label>
-            <select v-model="area" id="area" name="area">
-                <option v-for="option in options" :value="option.value">{{option.text}}</option>                      
+            <select v-model="area" id="area" name="Area">
+                <option v-for="area in areas" :value="area.text">{{area.text}}</option>                      
             </select>
 
             <label for="toko">Nama Toko yang Dikunjungi</label>
-            <textarea v-model="toko" id="toko" name="toko" placeholder="Nama Toko.." style="height:200px"></textarea>
+            <select v-model="toko" id="toko" name="Nama Toko">
+                <option v-for="toko in stores" :value="toko.text">{{toko.text}}</option>                      
+            </select>
+
+            <label for="collection">Jumlah Setoran Tagihan</label>
+            <input type="text" v-model="collection" id="collection" name="Jumlah Tagihan" placeholder="Isi Tanpa Titik dan Koma.." >
+
+
             <label></label>
             <input type="submit" value="Submit Laporan">
             <input type="button" value="Clear Form" onclick="javascript:eraseText();">
@@ -42,34 +49,53 @@
     var vm = new Vue({
     el: '#app',
     data: {
-        fname: '',
-        lname: '',
-        nrp: '',
-        area: '',
-        options: [
+        names: [
+          { text: 'Andi Hidayat', value: '01' },
+          { text: 'Hendra Kamajaya', value: '02' },
+          { text: 'Chocky Bolemeyer', value: '03' },
+          { text: 'Steven Abraham', value: '04' },
+          { text: 'Muhammad Fatih', value: '05' },
+        ],
+        nrps: [
+          { text: '0011223344', value: '01' },
+          { text: '0011223345', value: '02' },
+          { text: '0011223346', value: '03' },
+          { text: '0011223347', value: '04' },
+          { text: '0011223348', value: '05' },
+        ],
+        areas: [
           { text: 'Jakarta Timur', value: '01' },
           { text: 'Bekasi Barat', value: '02' },
           { text: 'Bekasi Timur', value: '03' },
           { text: 'Cibitung', value: '04' },
           { text: 'Cikarang', value: '05' },
         ],
-        toko:'',
+       stores: [
+          { text: 'Toko 1', value: '01' },
+          { text: 'Toko 2', value: '02' },
+          { text: 'Toko 3', value: '03' },
+          { text: 'Toko 4', value: '04' },
+          { text: 'Toko 5', value: '05' },
+          { text: 'Toko 6', value: '06' },
+          { text: 'Toko 7', value: '07' },
+          { text: 'Toko 8', value: '08' },
+          { text: 'Toko 9', value: '09' },
+          { text: 'Toko 10', value: '10' },
+        ],
+        collection: ''
         
     },
     methods: {
         submitForm(event){
             let error = 0
-              if(this.fname.length < 2){
+              if(this.fullName.length === 0){
                   error++
-                  alert('Nama Depan harus diisi!')
+                  alert('Pilih Nama Sales!')
               }
-              else if(this.lname.length < 1){
+            
+              else if(this.nrp.length === 0){
                   error++
-                  alert('Nama Belakang harus diisi!')
-              }
-              else if(this.nrp.length < 10){
-                  error++
-                  alert('NRP harus diisi')
+                  alert('Pilih NRP')
               }
               else if(this.area.length === 0){
                   error++
@@ -77,11 +103,14 @@
               }
               else if(this.toko.length === 0){
                   error++
-                  alert('Nama Toko harus diisi!')
+                  alert('Pilih 1 Nama Toko!')
+              }
+              else if(this.collection.length < 1){
+                  error++
+                  alert('Nilai Tagihan belum diinput!')
               }
               if( errors === 0 ){
                   alert('Terima kasih telah mengisi data dengan benar!')
-                
               }
               event.preventDefault()
 
@@ -92,11 +121,11 @@
   </script>
   <script type="text/javascript">
       function eraseText() {
-            document.getElementById("fname").value = "";
-            document.getElementById("lname").value = "";
+            document.getElementById("fullName").value = "";
             document.getElementById("nrp").value = "";
             document.getElementById("area").value = "";
             document.getElementById("toko").value = "";
+            document.getElementById("collection").value = "";
           }
   </script>
   <script>
