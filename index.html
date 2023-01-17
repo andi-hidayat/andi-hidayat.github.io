@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="lib/vue.js/"></script>
+  <link rel="stylesheet" href="lib/style.css">
+  <title>Berkah Salesman Report</title>
+</head>
+<body>
+  <div id="app">
+     <div class="container">
+        <h1>LAPORAN HARIAN SALESMAN PT. BERKAH</h1>
+        <form name="sales-report-form" @submit="submitForm($event)" method="post" action="">
+           
+            <label for="fname">Nama Depan</label>
+            <input type="text" v-model="fname" id="fname" name="firstname" placeholder="Nama Depan .." >
+
+            <label for="lname">Nama Belakang</label>
+            <input type="text" v-model="lname" id="lname" name="lastname" placeholder="Nama Belakang.." >
+
+            <label for="nrp">NRP</label>
+            <input type="text" v-model="nrp" id="nrp" name="sales_nrp" placeholder="NRP.." >
+
+            <label for="area">Area Kerja</label>
+            <select v-model="area" id="area" name="area">
+                <option v-for="option in options" :value="option.value">{{option.text}}</option>                      
+            </select>
+
+            <label for="toko">Nama Toko yang Dikunjungi</label>
+            <textarea v-model="toko" id="toko" name="toko" placeholder="Nama Toko.." style="height:200px"></textarea>
+            <label></label>
+            <input type="submit" value="Submit Laporan">
+            <input type="button" value="Clear Form" onclick="javascript:eraseText();">
+                       
+        </form>
+      </div>
+    </div>
+
+
+  <script>
+    var vm = new Vue({
+    el: '#app',
+    data: {
+        fname: '',
+        lname: '',
+        nrp: '',
+        area: '',
+        options: [
+          { text: 'Jakarta Timur', value: '01' },
+          { text: 'Bekasi Barat', value: '02' },
+          { text: 'Bekasi Timur', value: '03' },
+          { text: 'Cibitung', value: '04' },
+          { text: 'Cikarang', value: '05' },
+        ],
+        toko:'',
+        
+    },
+    methods: {
+        submitForm(event){
+            let error = 0
+              if(this.fname.length < 2){
+                  error++
+                  alert('Nama Depan harus diisi!')
+              }
+              else if(this.lname.length < 1){
+                  error++
+                  alert('Nama Belakang harus diisi!')
+              }
+              else if(this.nrp.length < 10){
+                  error++
+                  alert('NRP harus diisi')
+              }
+              else if(this.area.length === 0){
+                  error++
+                  alert('Pilih 1 area kerja!')
+              }
+              else if(this.toko.length === 0){
+                  error++
+                  alert('Nama Toko harus diisi!')
+              }
+              if( errors === 0 ){
+                  alert('Terima kasih telah mengisi data dengan benar!')
+                
+              }
+              event.preventDefault()
+
+          },
+        
+        }
+    })
+  </script>
+  <script type="text/javascript">
+      function eraseText() {
+            document.getElementById("fname").value = "";
+            document.getElementById("lname").value = "";
+            document.getElementById("nrp").value = "";
+            document.getElementById("area").value = "";
+            document.getElementById("toko").value = "";
+          }
+  </script>
+  <script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwLBmbJH4Ize71T708FPvfqw6Y6OrQvHDhzTUQE7ry_ZJvyuDxULU5PZqya987Z9nz4cA/exec'
+  const form = document.forms['sales-report-form']
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => console.log('Success!', response))
+      .catch(error => console.error('Error!', error.message))
+  })
+  </script>
+  
+</body>
+</html>
